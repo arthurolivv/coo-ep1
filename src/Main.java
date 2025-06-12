@@ -1,3 +1,4 @@
+import libs.GameLib;
 import states.GameStates;
 import java.awt.Color;
 
@@ -85,7 +86,7 @@ public class Main {
 		long currentTime = System.currentTimeMillis();
 
 		/* variáveis do player */
-		
+
 		int player_state = ACTIVE;						// estado
 		double player_X = GameLib.WIDTH / 2;					// coordenada x
 		double player_Y = GameLib.HEIGHT * 0.90;				// coordenada y
@@ -178,7 +179,7 @@ public class Main {
 		/* iniciado interface gráfica */
 		
 		GameLib.initGraphics();
-		//GameLib.initGraphics_SAFE_MODE();  // chame esta versão do método caso nada seja desenhado na janela do jogo.
+		//libs.GameLib.initGraphics_SAFE_MODE();  // chame esta versão do método caso nada seja desenhado na janela do jogo.
 		
 		/*************************************************************************************************/
 		/*                                                                                               */
@@ -661,7 +662,7 @@ public class Main {
 				}
 			}
 			
-			/* chamada a display() da classe GameLib atualiza o desenho exibido pela interface do jogo. */
+			/* chamada a display() da classe libs.GameLib atualiza o desenho exibido pela interface do jogo. */
 			
 			GameLib.display();
 			

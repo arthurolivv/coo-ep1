@@ -1,31 +1,58 @@
-package GameObjects.Objects;
-
-import GameObjects.GameObjects;
-import states.GameStates;
-
-public class Player extends GameObjects {
-
-    public GameStates state;
-    public double x;
-    public double y;
-    public double vx;
-    public double vy;
-    public double radius;
-    public double explosionStart;
-    public double explosionEnd;
-    public long nextShot;
-
-    // Construtor que já inicializa com valores padrão
-    public Player(long currentTime) {
-        this.state = GameStates.INACTIVE;  // ou ACTIVE, depende do seu uso inicial
-        this.x = GameLib.WIDTH / 2;
-        this.y = GameLib.HEIGHT * 0.90;
-        this.vx = 0.25;
-        this.vy = 0.25;
-        this.radius = 12.0;
-        this.explosionStart = 0;
-        this.explosionEnd = 0;
-        this.nextShot = currentTime;
-    }
-}
-
+//package GameObjects.Objects;
+//
+//import GameObjects.GameObject;
+//import states.GameStates;
+//
+//public class Player implements GameObject {
+//    // Constantes para estados (assumindo que existem no código original)
+//    public static final int INACTIVE = GameStates.INACTIVE.getValue();
+//    public static final int ACTIVE = GameStates.ACTIVE.getValue();
+//    public static final int EXPLODING = GameStates.EXPLODING.getValue();
+//
+//    private static final double DEFAULT_X = GameLib.WIDTH / 2.0;
+//    private static final double DEFAULT_Y = GameLib.HEIGHT * 0.90;
+//    private static final double DEFAULT_VELOCITY = 0.25;
+//    private static final double DEFAULT_RADIUS = 12.0;
+//    private static final long SHOT_COOLDOWN = 100; //
+//
+//    @Override
+//    public void update(long currentTime) {
+//
+//    }
+//
+//    @Override
+//    public void render() {
+//
+//    }
+//
+//    @Override
+//    public boolean isActive() {
+//        return false;
+//    }
+//
+//    @Override
+//    public double getX() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public double getY() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public double getRadius() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void setState(int state) {
+//
+//    }
+//
+//    @Override
+//    public int getState() {
+//        return 0;
+//    }
+//}
+//
