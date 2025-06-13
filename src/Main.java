@@ -147,14 +147,6 @@ public class Main {
 //		double enemy1_radius = 9.0;						// raio (tamanho do inimigo 1)
 //		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
 
-		List<GameObject> enemy1 = new ArrayList<>();
-
-		int enemy1Count = 10;
-
-		for(int i = 0; i < enemy1Count; i++) {
-			enemy1.add(new Enemy1(200, 2.0, 9.0, currentTime + 2000));
-		}
-
 		/* variáveis dos inimigos tipo 2 */
 		
 //		int [] enemy2_states = new int[10];					// estados
@@ -169,23 +161,31 @@ public class Main {
 //		int enemy2_count = 0;							// contagem de inimigos tipo 2 (usada na "formação de voo")
 //		double enemy2_radius = 12.0;						// raio (tamanho aproximado do inimigo 2)
 //		long nextEnemy2 = currentTime + 7000;					// instante em que um novo inimigo 2 deve aparecer
-
-		List<GameObject> enemy2 = new ArrayList<>();
-
-		int enemy2Count = 10;
-
-		for(int i = 0; i < enemy2Count; i++) {
-			enemy2.add(new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0));
-		}
 		
 		/* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 		
-		int [] e_projectile_states = new int[200];				// estados
-		double [] e_projectile_X = new double[200];				// coordenadas x
-		double [] e_projectile_Y = new double[200];				// coordenadas y
-		double [] e_projectile_VX = new double[200];				// velocidade no eixo x
-		double [] e_projectile_VY = new double[200];				// velocidade no eixo y
-		double e_projectile_radius = 2.0;					// raio (tamanho dos projéteis inimigos)
+//		int [] e_projectile_states = new int[200];				// estados
+//		double [] e_projectile_X = new double[200];				// coordenadas x
+//		double [] e_projectile_Y = new double[200];				// coordenadas y
+//		double [] e_projectile_VX = new double[200];				// velocidade no eixo x
+//		double [] e_projectile_VY = new double[200];				// velocidade no eixo y
+//		double e_projectile_radius = 2.0;					// raio (tamanho dos projéteis inimigos)
+
+		List<Enemy1> enemy1 = new ArrayList<>();
+
+		int enemy1Count = 10;
+
+		for(int i = 0; i < enemy1Count; i++) {
+			enemy1.add(new Enemy1(200, 2.0, 9.0, currentTime + 2000));
+		}
+
+		List<Enemy2> enemy2 = new ArrayList<>();
+
+		int enemy2Count = 10;
+
+		for (int i = 0; i < enemy2Count; i++) {
+			enemy2.add(new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0));
+		}
 		
 		/* estrelas que formam o fundo de primeiro plano */
 		
@@ -206,11 +206,16 @@ public class Main {
 		//for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
 		player.initializeProjectiles();
 
-		for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
+		//for(int i = 0; i < e_projectile_states.length; i++) e_projectile_states[i] = INACTIVE;
+		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).initializeProjectiles();
+		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).initializeProjectiles();
 
-		for(int i = 0; i < enemy1_states.length; i++) enemy1_states[i] = INACTIVE;
 
-		for(int i = 0; i < enemy2_states.length; i++) enemy2_states[i] = INACTIVE;
+//		for(int i = 0; i < enemy1_states.length; i++) enemy1_states[i] = INACTIVE;
+		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).setState(INACTIVE);
+
+//		for(int i = 0; i < enemy2_states.length; i++) enemy2_states[i] = INACTIVE;
+		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).setState(INACTIVE);
 		
 		for(int i = 0; i < background1_X.length; i++){
 			

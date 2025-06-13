@@ -77,6 +77,7 @@ public class EnemyGeneric extends Projectiles implements GameObject {
 
     @Override
     public void setState(int state) {
+        this.enemy_state = state;
 
     }
 
