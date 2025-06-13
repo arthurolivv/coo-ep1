@@ -1,16 +1,10 @@
 package GameEngine.Objects;
 
+import GameEngine.Interfaces.GameObject;
 import libs.GameLib;
 
 // Classe Player implementando GameObject
 public class Player extends Projectiles implements GameObject {
-
-    // Constantes de configuração
-    private static final double DEFAULT_X = GameLib.WIDTH / 2.0;
-    private static final double DEFAULT_Y = GameLib.HEIGHT * 0.90;
-    private static final double DEFAULT_VELOCITY = 0.25;
-    private static final double DEFAULT_RADIUS = 12.0;
-    private static final long SHOT_COOLDOWN = 100; // tempo entre tiros em ms
 
     // Atributos privados (encapsulamento)
     private int state;
@@ -46,16 +40,6 @@ public class Player extends Projectiles implements GameObject {
         this.explosionStart = explosionStart;
         this.explosionEnd = explosionEnd;
         this.nextShot =  nextShot;
-
-    }
-
-    @Override
-    public void update(long currentTime) {
-
-    }
-
-    @Override
-    public void render() {
 
     }
 

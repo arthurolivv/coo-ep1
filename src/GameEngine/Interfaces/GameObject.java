@@ -1,11 +1,7 @@
-package GameEngine.Objects;
+package GameEngine.Interfaces;
 
 // Interface que define o contrato básico para todos os objetos do jogo
 public interface GameObject {
-
-    void update(long currentTime);
-
-    void render();
 
     boolean isActive();
 
@@ -38,6 +34,5 @@ public interface GameObject {
     double getNextShot();
 
     void setNextShot(long nextShot);
-
 
 }

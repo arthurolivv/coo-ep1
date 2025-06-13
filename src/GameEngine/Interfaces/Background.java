@@ -1,4 +1,4 @@
-package GameEngine.Background;
+package GameEngine.Interfaces;
 
 public interface Background {
 }

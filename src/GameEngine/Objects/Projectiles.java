@@ -5,9 +5,9 @@ import states.GameStates;
 public class Projectiles {
 
     // Constantes para estados (assumindo que existem no código original)
-    public static final int INACTIVE = GameStates.INACTIVE.getValue();
-    public static final int ACTIVE = GameStates.ACTIVE.getValue();
-    public static final int EXPLODING = GameStates.EXPLODING.getValue();
+    protected static final int INACTIVE = GameStates.INACTIVE.getValue();
+    protected static final int ACTIVE = GameStates.ACTIVE.getValue();
+    protected static final int EXPLODING = GameStates.EXPLODING.getValue();
 
     protected int [] projectile_states;
     protected double [] projectile_X;

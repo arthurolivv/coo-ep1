@@ -1,7 +1,13 @@
+import GameEngine.Interfaces.GameObject;
+import GameEngine.Objects.Enemys.Enemy1;
+import GameEngine.Objects.Enemys.Enemy2;
+import GameEngine.Objects.Enemys.EnemyGeneric;
 import GameEngine.Objects.Player;
 import libs.GameLib;
 import states.GameStates;
 import java.awt.Color;
+import java.util.ArrayList;
+import java.util.List;
 
 /***********************************************************************/
 /*                                                                     */
@@ -129,32 +135,48 @@ public class Main {
 
 		/* variáveis dos inimigos tipo 1 */
 		
-		int [] enemy1_states = new int[10];					// estados
-		double [] enemy1_X = new double[10];					// coordenadas x
-		double [] enemy1_Y = new double[10];					// coordenadas y
-		double [] enemy1_V = new double[10];					// velocidades
-		double [] enemy1_angle = new double[10];				// ângulos (indicam direção do movimento)
-		double [] enemy1_RV = new double[10];					// velocidades de rotação
-		double [] enemy1_explosion_start = new double[10];			// instantes dos inícios das explosões
-		double [] enemy1_explosion_end = new double[10];			// instantes dos finais da explosões
-		long [] enemy1_nextShoot = new long[10];				// instantes do próximo tiro
-		double enemy1_radius = 9.0;						// raio (tamanho do inimigo 1)
-		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
-		
+//		int [] enemy1_states = new int[10];					// estados
+//		double [] enemy1_X = new double[10];					// coordenadas x
+//		double [] enemy1_Y = new double[10];					// coordenadas y
+//		double [] enemy1_V = new double[10];					// velocidades
+//		double [] enemy1_angle = new double[10];				// ângulos (indicam direção do movimento)
+//		double [] enemy1_RV = new double[10];					// velocidades de rotação
+//		double [] enemy1_explosion_start = new double[10];			// instantes dos inícios das explosões
+//		double [] enemy1_explosion_end = new double[10];			// instantes dos finais da explosões
+//		long [] enemy1_nextShoot = new long[10];				// instantes do próximo tiro
+//		double enemy1_radius = 9.0;						// raio (tamanho do inimigo 1)
+//		long nextEnemy1 = currentTime + 2000;					// instante em que um novo inimigo 1 deve aparecer
+
+		List<GameObject> enemy1 = new ArrayList<>();
+
+		int enemy1Count = 10;
+
+		for(int i = 0; i < enemy1Count; i++) {
+			enemy1.add(new Enemy1(200, 2.0, 9.0, currentTime + 2000));
+		}
+
 		/* variáveis dos inimigos tipo 2 */
 		
-		int [] enemy2_states = new int[10];					// estados
-		double [] enemy2_X = new double[10];					// coordenadas x
-		double [] enemy2_Y = new double[10];					// coordenadas y
-		double [] enemy2_V = new double[10];					// velocidades
-		double [] enemy2_angle = new double[10];				// ângulos (indicam direção do movimento)
-		double [] enemy2_RV = new double[10];					// velocidades de rotação
-		double [] enemy2_explosion_start = new double[10];			// instantes dos inícios das explosões
-		double [] enemy2_explosion_end = new double[10];			// instantes dos finais das explosões
-		double enemy2_spawnX = GameLib.WIDTH * 0.20;				// coordenada x do próximo inimigo tipo 2 a aparecer
-		int enemy2_count = 0;							// contagem de inimigos tipo 2 (usada na "formação de voo")
-		double enemy2_radius = 12.0;						// raio (tamanho aproximado do inimigo 2)
-		long nextEnemy2 = currentTime + 7000;					// instante em que um novo inimigo 2 deve aparecer
+//		int [] enemy2_states = new int[10];					// estados
+//		double [] enemy2_X = new double[10];					// coordenadas x
+//		double [] enemy2_Y = new double[10];					// coordenadas y
+//		double [] enemy2_V = new double[10];					// velocidades
+//		double [] enemy2_angle = new double[10];				// ângulos (indicam direção do movimento)
+//		double [] enemy2_RV = new double[10];					// velocidades de rotação
+//		double [] enemy2_explosion_start = new double[10];			// instantes dos inícios das explosões
+//		double [] enemy2_explosion_end = new double[10];			// instantes dos finais das explosões
+//		double enemy2_spawnX = GameLib.WIDTH * 0.20;				// coordenada x do próximo inimigo tipo 2 a aparecer
+//		int enemy2_count = 0;							// contagem de inimigos tipo 2 (usada na "formação de voo")
+//		double enemy2_radius = 12.0;						// raio (tamanho aproximado do inimigo 2)
+//		long nextEnemy2 = currentTime + 7000;					// instante em que um novo inimigo 2 deve aparecer
+
+		List<GameObject> enemy2 = new ArrayList<>();
+
+		int enemy2Count = 10;
+
+		for(int i = 0; i < enemy2Count; i++) {
+			enemy2.add(new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0));
+		}
 		
 		/* variáveis dos projéteis lançados pelos inimigos (tanto tipo 1, quanto tipo 2) */
 		
