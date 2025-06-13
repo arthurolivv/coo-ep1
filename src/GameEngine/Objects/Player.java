@@ -1,6 +1,7 @@
 package GameEngine.Objects;
 
 import GameEngine.Interfaces.GameObject;
+import GameEngine.Objects.Enemys.EnemyGeneric;
 import libs.GameLib;
 
 // Classe Player implementando GameObject
@@ -41,6 +42,46 @@ public class Player extends Projectiles implements GameObject {
         this.explosionEnd = explosionEnd;
         this.nextShot =  nextShot;
 
+    }
+
+
+    @Override
+    public void collide(GameObject Object, long currentTime) {
+        //colisao com projeteis inimigos
+        if (Object instanceof EnemyGeneric enemy) {
+            int[] states = enemy.getProjectilesStates();
+            double[] projX = enemy.getProjectilesX();
+            double[] projY = enemy.getProjectilesY();
+            double radius = enemy.getProjectileRadius();
+
+            for (int i = 0; i < states.length; i++) {
+                if (states[i] == ACTIVE) {
+                    double dx = projX[i] - this.getX();
+                    double dy = projY[i] - this.getY();
+                    double dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < (this.getRadius() + radius) * 0.8) {
+                        this.setState(EXPLODING);
+                        this.setExplosionStart(currentTime);
+                        this.setExplosionEnd(currentTime + 2000);
+                        return;
+                    }
+                }
+            }
+        }
+
+        // Colisão direta com inimigo
+        if (Object instanceof EnemyGeneric enemy) {
+            double dx = enemy.getX() - this.getX();
+            double dy = enemy.getY() - this.getY();
+            double dist = Math.sqrt(dx * dx + dy * dy);
+
+            if (dist < (this.getRadius() + enemy.getRadius()) * 0.8) {
+                this.setState(EXPLODING);
+                this.setExplosionStart(currentTime);
+                this.setExplosionEnd(currentTime + 2000);
+            }
+        }
     }
 
     @Override

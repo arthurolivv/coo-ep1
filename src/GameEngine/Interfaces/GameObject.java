@@ -3,6 +3,8 @@ package GameEngine.Interfaces;
 // Interface que define o contrato básico para todos os objetos do jogo
 public interface GameObject {
 
+    void collide(GameObject Object, long currentTime);
+
     boolean isActive();
 
     void setX(double x);

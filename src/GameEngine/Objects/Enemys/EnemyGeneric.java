@@ -32,6 +32,37 @@ public class EnemyGeneric extends Projectiles implements GameObject {
         this.nextEnemy = nextEnemy;
     }
 
+
+    @Override
+    public void collide(GameObject object, long currentTime) {
+        if (!(object instanceof EnemyGeneric) || this.getState() != ACTIVE) return;
+
+        EnemyGeneric enemy = (EnemyGeneric) object;
+
+        int[] projStates = enemy.getProjectilesStates();
+        double[] projX = enemy.getProjectilesX();
+        double[] projY = enemy.getProjectilesY();
+        double projRadius = enemy.getProjectileRadius(); // getter
+
+        for (int i = 0; i < projStates.length; i++) {
+            if (projStates[i] == ACTIVE) {
+                double dx = projX[i] - this.getX();
+                double dy = projY[i] - this.getY();
+                double dist = Math.sqrt(dx * dx + dy * dy);
+
+                if (dist < (this.getRadius() + projRadius) * 0.8) {
+                    this.setState(EXPLODING);
+                    this.setExplosionStart(currentTime);
+                    this.setExplosionEnd(currentTime + 2000);
+
+                    projStates[i] = INACTIVE;
+                    break;
+                }
+            }
+        }
+    }
+
+
     @Override
     public boolean isActive() {
         if(enemy_state == ACTIVE){
@@ -114,5 +145,9 @@ public class EnemyGeneric extends Projectiles implements GameObject {
     @Override
     public void setNextShot(long nextShot) {
 
+    }
+
+    public double getProjectileRadius() {
+        return this.projectile_radius;
     }
 }
