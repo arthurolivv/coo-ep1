@@ -167,4 +167,19 @@ public class Player extends Projectiles implements GameObject {
         this.nextShot = nextShot;
     }
 
+    public void updateStateProjectile(long delta) {
+        for(int i = 0; i < getProjectilesStates().length; i++) {
+            if(getProjectilesStates()[i] == ACTIVE) {
+                // Verifica se o projétil saiu da tela
+                if(getProjectilesY()[i] < 0) {
+                    getProjectilesStates()[i] = INACTIVE;
+                } else {
+                    getProjectilesX()[i] += getProjectilesVX()[i] * delta;
+                    getProjectilesY()[i] += getProjectilesVY()[i] * delta;
+                }
+            }
+        }
+    }
+
+
 }

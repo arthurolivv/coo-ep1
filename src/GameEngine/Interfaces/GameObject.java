@@ -37,4 +37,5 @@ public interface GameObject {
 
     void setNextShot(long nextShot);
 
+
 }
