@@ -49,9 +49,9 @@ public class Player extends Projectiles implements GameObject {
     public void collide(GameObject Object, long currentTime) {
         //colisao com projeteis inimigos
         if (Object instanceof EnemyGeneric enemy) {
-            int[] states = enemy.getProjectilesStates();
-            double[] projX = enemy.getProjectilesX();
-            double[] projY = enemy.getProjectilesY();
+            int[] states = enemy.getProjectile_states();
+            double[] projX = enemy.getProjectile_X();
+            double[] projY = enemy.getProjectile_Y();
             double radius = enemy.getProjectileRadius();
 
             for (int i = 0; i < states.length; i++) {
@@ -85,10 +85,8 @@ public class Player extends Projectiles implements GameObject {
     }
 
     @Override
-    public boolean isActive() {
-        if(state == ACTIVE){
-            return true;
-        }
+    public boolean checkState(int state) {
+        if(this.state == state) return true;
         return false;
     }
 
@@ -112,12 +110,10 @@ public class Player extends Projectiles implements GameObject {
         return y;
     }
 
-    @Override
     public double getVX() {
         return velocityX;
     }
 
-    @Override
     public double getVY() {
         return velocityY;
     }
@@ -157,25 +153,25 @@ public class Player extends Projectiles implements GameObject {
         this.explosionEnd = explosionEnd;
     }
 
-    @Override
     public double getNextShot() {
+
         return nextShot;
     }
 
-    @Override
     public void setNextShot(long nextShot) {
+
         this.nextShot = nextShot;
     }
 
     public void updateStateProjectile(long delta) {
-        for(int i = 0; i < getProjectilesStates().length; i++) {
-            if(getProjectilesStates()[i] == ACTIVE) {
+        for(int i = 0; i < getProjectile_states().length; i++) {
+            if(getProjectile_states()[i] == ACTIVE) {
                 // Verifica se o projétil saiu da tela
-                if(getProjectilesY()[i] < 0) {
-                    getProjectilesStates()[i] = INACTIVE;
+                if(getProjectile_Y()[i] < 0) {
+                    getProjectile_states()[i] = INACTIVE;
                 } else {
-                    getProjectilesX()[i] += getProjectilesVX()[i] * delta;
-                    getProjectilesY()[i] += getProjectilesVY()[i] * delta;
+                    getProjectile_X()[i] += getProjectile_VX()[i] * delta;
+                    getProjectile_Y()[i] += getProjectile_VY()[i] * delta;
                 }
             }
         }

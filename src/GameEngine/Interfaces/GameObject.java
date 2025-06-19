@@ -5,7 +5,7 @@ public interface GameObject {
 
     void collide(GameObject Object, long currentTime);
 
-    boolean isActive();
+    boolean checkState(int state);
 
     void setX(double x);
 
@@ -14,10 +14,6 @@ public interface GameObject {
     double getX();
 
     double getY();
-
-    double getVX();
-
-    double getVY();
 
     double getRadius();
 
@@ -32,10 +28,6 @@ public interface GameObject {
     void setExplosionStart(double explosionStart);
 
     void setExplosionEnd(double explosionEnd);
-
-    double getNextShot();
-
-    void setNextShot(long nextShot);
 
 
 }

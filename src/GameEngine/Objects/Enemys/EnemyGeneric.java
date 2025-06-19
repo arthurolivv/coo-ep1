@@ -5,7 +5,7 @@ import GameEngine.Objects.Player;
 import GameEngine.Objects.Projectiles;
 import libs.GameLib;
 
-public class EnemyGeneric extends Projectiles implements GameObject {
+public abstract class EnemyGeneric extends Projectiles implements GameObject {
 
     protected int enemy_state;
     protected double enemy_X;
@@ -21,15 +21,6 @@ public class EnemyGeneric extends Projectiles implements GameObject {
     public EnemyGeneric(int projectileCount, double projectile_radius, double enemy_radius,
                         long nextEnemy) {
         super(projectileCount, projectile_radius);
-//        this.enemy_state = enemy_state;
-//        this.enemy_X = enemy_X;
-//        this.enemy_Y = enemy_Y;
-//        this.enemy_V = enemy_V;
-//        this.enemy_angle = enemy_angle;
-//        this.enemy_RV = enemy_RV;
-//        this.enemy_explosion_start = enemy_explosion_start;
-//        this.enemy_explosion_end = enemy_explosion_end;
-//        this.enemy_nextShoot = enemy_nextShoot;
         this.enemy_radius = enemy_radius;
         this.nextEnemy = nextEnemy;
     }
@@ -41,9 +32,9 @@ public class EnemyGeneric extends Projectiles implements GameObject {
 
         Player player = (Player) Object;
 
-        int[] projStates = player.getProjectilesStates();
-        double[] projX = player.getProjectilesX();
-        double[] projY = player.getProjectilesY();
+        int[] projStates = player.getProjectile_states();
+        double[] projX = player.getProjectile_X();
+        double[] projY = player.getProjectile_Y();
 
         for (int i = 0; i < projStates.length; i++) {
             if (projStates[i] == ACTIVE) {
@@ -64,41 +55,47 @@ public class EnemyGeneric extends Projectiles implements GameObject {
     }
 
     @Override
-    public boolean isActive() {
-        if (enemy_state == ACTIVE) {
-            return true;
-        }
+    public boolean checkState(int state) {
+        if(this.enemy_state == state) return true;
         return false;
     }
 
     @Override
     public void setX(double x) {
-
+        enemy_X = x;
     }
 
     @Override
     public void setY(double y) {
+        enemy_Y = y;
 
     }
 
     @Override
     public double getX() {
-        return 0;
+
+        return enemy_X;
     }
 
     @Override
     public double getY() {
-        return 0;
+        return enemy_Y;
     }
 
-    @Override
-    public double getVX() {
-        return 0;
+    public double getV(){
+        return enemy_V;
     }
 
-    @Override
-    public double getVY() {
-        return 0;
+    public void setV(double v){
+        this.enemy_V = v;
+    }
+
+    public double getRV(){
+        return enemy_RV;
+    }
+
+    public void setRV(double rv){
+        this.enemy_RV = rv;
     }
 
     @Override
@@ -114,7 +111,15 @@ public class EnemyGeneric extends Projectiles implements GameObject {
 
     @Override
     public int getState() {
-        return 0;
+        return enemy_state;
+    }
+
+    public void setAngle(double angle) {
+        this.enemy_angle = angle;
+    }
+
+    public double getAngle() {
+        return this.enemy_angle;
     }
 
     @Override
@@ -134,16 +139,6 @@ public class EnemyGeneric extends Projectiles implements GameObject {
 
     @Override
     public void setExplosionEnd(double explosionEnd) {
-
-    }
-
-    @Override
-    public double getNextShot() {
-        return 0;
-    }
-
-    @Override
-    public void setNextShot(long nextShot) {
 
     }
 
@@ -167,77 +162,33 @@ public class EnemyGeneric extends Projectiles implements GameObject {
         }
     }
 
-
     public void updateExplosion(long currentTime) {
-        if (this.getState() == EXPLODING) {
-            if (currentTime > this.getExplosionEnd()) {
-                this.setState(INACTIVE);
-            }
+        if (enemy_state == EXPLODING && currentTime > enemy_explosion_end) {
+            enemy_state = INACTIVE;
         }
     }
 
-    public boolean updateMovement(double delta, double screenLimitY, double screenLimitX) {
-        if (enemy_state != ACTIVE) return false;
-
-        // Saiu da tela? Desativa
-        if ((screenLimitY > 0 && enemy_Y > screenLimitY) ||
-                (screenLimitX > 0 && (enemy_X < -10 || enemy_X > screenLimitX + 10))) {
-            enemy_state = INACTIVE;
-            return false;
-        }
-
-        // Atualiza posição e rotação
+    public void updateMovement(double delta) {
         enemy_X += enemy_V * Math.cos(enemy_angle) * delta;
         enemy_Y += enemy_V * Math.sin(enemy_angle) * delta * (-1.0);
         enemy_angle += enemy_RV * delta;
-
-        return true;
     }
 
-//    public void updateActive(double delta, long currentTime, double playerY, int[] projectileStates, double[] projectileX, double[] projectileY, double[] projectileVX, double[] projectileVY) {
-//
-//        if (enemy_state == ACTIVE) {
-//
-//            // Se saiu da tela, desativa
-//            if (enemy_Y > GameLib.HEIGHT + 10) {
-//                enemy_state = INACTIVE;
-//            } else {
-//                // Atualiza posição e rotação
-//                enemy_X += enemy_V * Math.cos(enemy_angle) * delta;
-//                enemy_Y += enemy_V * Math.sin(enemy_angle) * delta * (-1.0);
-//                enemy_angle += enemy_RV * delta;
-//
-//                // Verifica se deve atirar
-//                if (currentTime > nextEnemy && enemy_Y < playerY) {
-//
-//                    int free = findFreeIndex(projectileStates);
-//
-//                    if (free < projectileStates.length) {
-//                        projectileX[free] = enemy_X;
-//                        projectileY[free] = enemy_Y;
-//                        projectileVX[free] = Math.cos(enemy_angle) * 0.45;
-//                        projectileVY[free] = Math.sin(enemy_angle) * 0.45 * (-1.0);
-//                        projectileStates[free] = ACTIVE;
-//
-//                        nextEnemy = currentTime + 200 + (long)(Math.random() * 500);
-//                    }
-//                }
-//            }
-//        }
-//
-//        // Atualiza estado de explosão
-//        if (enemy_state == EXPLODING) {
-//            if (currentTime > enemy_explosion_end) {
-//                enemy_state = INACTIVE;
-//            }
-//        }
-//    }
+    public abstract boolean shouldSpawn(long currentTime);
 
     protected int findFreeIndex(int[] states) {
         for (int i = 0; i < states.length; i++) {
             if (states[i] == INACTIVE) return i;
         }
         return states.length;
+    }
+
+    public long getNextEnemy() {
+        return nextEnemy;
+    }
+
+    public void setNextEnemy(long nextEnemy) {
+        this.nextEnemy = nextEnemy;
     }
 
 }

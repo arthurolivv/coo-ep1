@@ -29,27 +29,51 @@ public class Projectiles {
         for(int i = 0; i < projectile_states.length; i++) projectile_states[i] = INACTIVE;
     }
 
-    public int [] getProjectilesStates(){
+    public int[] getProjectile_states() {
         return projectile_states;
     }
 
-    public void setProjectilesStates(int [] projectile_states){
-        this.projectile_states = projectile_states;
-    }
-
-    public double [] getProjectilesX(){
+    public double[] getProjectile_X() {
         return projectile_X;
     }
 
-    public double [] getProjectilesY(){
+    public double[] getProjectile_Y() {
         return projectile_Y;
     }
 
-    public double [] getProjectilesVX(){
+    public double[] getProjectile_VX() {
         return projectile_VX;
     }
 
-    public double [] getProjectilesVY(){
+    public double[] getProjectile_VY() {
         return projectile_VY;
+    }
+
+    public double getProjectile_radius() {
+        return projectile_radius;
+    }
+
+    public void setProjectile_X(double x, int index) {
+        this.projectile_X[index] = x;
+    }
+
+    public void setProjectile_Y(double y, int index) {
+        this.projectile_Y[index] = y;
+    }
+
+    public void setProjectile_VX(double vx, int index) {
+        this.projectile_VX[index] = vx;
+    }
+
+    public void setProjectile_VY(double vy, int index) {
+        this.projectile_VY[index] = vy;
+    }
+
+    public void setProjectile_State(int state, int index) {
+        this.projectile_states[index] = state;
+    }
+
+    public void setProjectile_radius(double projectile_radius) {
+        this.projectile_radius = projectile_radius;
     }
 }
