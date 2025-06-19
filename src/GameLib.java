@@ -1,5 +1,3 @@
-package libs;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Toolkit;
