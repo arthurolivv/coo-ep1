@@ -129,11 +129,6 @@ public class Player extends Projectiles implements GameObject {
     }
 
     @Override
-    public int getState() {
-        return this.state;
-    }
-
-    @Override
     public double getExplosionStart() {
         return explosionStart;
     }

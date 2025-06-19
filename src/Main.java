@@ -2,6 +2,7 @@ import GameEngine.Interfaces.GameObject;
 import GameEngine.Objects.Enemys.Enemy1;
 import GameEngine.Objects.Enemys.Enemy2;
 import GameEngine.Objects.Enemys.EnemyGeneric;
+import GameEngine.Objects.Managers.EnemyManager;
 import GameEngine.Objects.Player;
 import libs.GameLib;
 import states.GameStates;
@@ -112,29 +113,60 @@ public class Main {
 				12.0,
 				0,
 				0,
-				System.currentTimeMillis()
+				currentTime
 		);
 
 		/* variáveis dos inimigos tipo 1 */
 
-		List<EnemyGeneric> enemy1 = new ArrayList<>();
+//		List<EnemyGeneric> enemy1 = new ArrayList<>();
+//
+//		int enemy1Count = 10;
+//
+//		for(int i = 0; i < enemy1Count; i++) {
+//			enemy1.add(new Enemy1(200, 2.0, 9.0, currentTime + 2000));
+//		}
+//
+//		/* variáveis dos inimigos tipo 2 */
+//
+//		List<EnemyGeneric> enemy2 = new ArrayList<>();
+//
+//		int enemy2Count = 10;
+//
+//		for (int i = 0; i < enemy2Count; i++) {
+//			enemy2.add(new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0));
+//		}
 
+		// Criação dos inimigos tipo 1
+		List<EnemyGeneric> enemy1List = new ArrayList<>();
 		int enemy1Count = 10;
 
-		for(int i = 0; i < enemy1Count; i++) {
-			enemy1.add(new Enemy1(200, 2.0, 9.0, currentTime + 2000));
+		for (int i = 0; i < enemy1Count; i++) {
+			Enemy1 e1 = new Enemy1(200, 2.0, 9.0, currentTime + 2000);
+			e1.setState(INACTIVE);
+			e1.initializeProjectiles();
+			enemy1List.add(e1);
 		}
 
-		/* variáveis dos inimigos tipo 2 */
-
-		List<EnemyGeneric> enemy2 = new ArrayList<>();
-
+// Criação dos inimigos tipo 2
+		List<EnemyGeneric> enemy2List = new ArrayList<>();
 		int enemy2Count = 10;
 
 		for (int i = 0; i < enemy2Count; i++) {
-			enemy2.add(new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0));
+			Enemy2 e2 = new Enemy2(200, 2.0, 12.0, currentTime + 7000, GameLib.WIDTH * 0.20, 0);
+			e2.setState(INACTIVE);
+			e2.initializeProjectiles();
+			enemy2List.add(e2);
 		}
-		
+
+// Junta todas as listas de inimigos
+		List<EnemyGeneric> allEnemies = new ArrayList<>();
+		allEnemies.addAll(enemy1List);
+		allEnemies.addAll(enemy2List);
+
+// Manager geral
+		EnemyManager enemyManager = new EnemyManager(allEnemies);
+
+
 		/* estrelas que formam o fundo de primeiro plano */
 		
 		double [] background1_X = new double[20];
@@ -153,11 +185,11 @@ public class Main {
 
 		player.initializeProjectiles();
 
-		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).initializeProjectiles();
-		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).initializeProjectiles();
-
-		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).setState(INACTIVE);
-		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).setState(INACTIVE);
+//		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).initializeProjectiles();
+//		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).initializeProjectiles();
+//
+//		for(int i = 0; i < enemy1Count; i++) enemy1.get(i).setState(INACTIVE);
+//		for(int i = 0; i < enemy2Count; i++) enemy2.get(i).setState(INACTIVE);
 		
 		for(int i = 0; i < background1_X.length; i++){
 			
@@ -216,22 +248,22 @@ public class Main {
 
 				/* colisões player - projeteis (inimigo) e inimigo adaptado 2*/
 
-				for (EnemyGeneric enemy : enemy1) {
+				for (EnemyGeneric enemy : enemy1List) {
 					player.collide(enemy, currentTime);
 				}
 
-				for (EnemyGeneric enemy : enemy2) {
+				for (EnemyGeneric enemy : enemy2List) {
 					player.collide(enemy, currentTime);
 				}
 
 
 				/* colisões projeteis (player) - inimigos Adaptado 2*/
 
-				for (EnemyGeneric enemy : enemy1) {
+				for (EnemyGeneric enemy : enemy1List) {
 					enemy.collide(player, currentTime);
 				}
 
-				for (EnemyGeneric enemy : enemy2) {
+				for (EnemyGeneric enemy : enemy2List) {
 					enemy.collide(player, currentTime);
 				}
 
@@ -244,18 +276,13 @@ public class Main {
 
 				/* projeteis (inimigos)*/
 
+				for (EnemyGeneric enemy : allEnemies) {
+					enemy.updateProjectiles(delta);
+				}
+
 				// Atualiza projéteis dos inimigos tipo 1
 
-
-				for (EnemyGeneric enemy : enemy1) {
-					enemy.updateProjectiles(delta);
-				}
-
-				for (EnemyGeneric enemy : enemy2) {
-					enemy.updateProjectiles(delta);
-				}
-
-				for (EnemyGeneric e : enemy1) {
+				for (EnemyGeneric e : enemy1List) {
 
 					e.updateExplosion(currentTime);
 
@@ -264,7 +291,6 @@ public class Main {
 
 						/* verificando se inimigo saiu da tela */
 						if (e.getY() > GameLib.HEIGHT + 10) {
-
 							e.setState(INACTIVE);
 						} else {
 
@@ -298,7 +324,7 @@ public class Main {
 
 				/* inimigos tipo 2  Original*/
 
-				for (EnemyGeneric e : enemy2) {
+				for (EnemyGeneric e : enemy2List) {
 					e.updateExplosion(currentTime);
 
 					if (e.checkState(ACTIVE)) {
@@ -374,7 +400,7 @@ public class Main {
 			
 			/* verificando se novos inimigos (tipo 1) devem ser "lançados" */
 
-			for (EnemyGeneric e : enemy1) {
+			for (EnemyGeneric e : enemy1List) {
 
 				// Só ativa se estiver INATIVO e o tempo atual já passou do tempo mínimo desse inimigo
 				if (e.getState() == INACTIVE && currentTime > e.getNextEnemy()) {
@@ -401,7 +427,7 @@ public class Main {
 			/* verificando se novos inimigos (tipo 2) devem ser "lançados" */
 
 
-			for (EnemyGeneric e : enemy2) {
+			for (EnemyGeneric e : enemy2List) {
 
 				if (e instanceof Enemy2 && e.getState() == INACTIVE && currentTime > e.getNextEnemy()) {
 
@@ -435,7 +461,7 @@ public class Main {
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
 
-			if(player.getState() == EXPLODING){
+			if(player.checkState(EXPLODING)){
 
 				if(currentTime > player.getExplosionEnd()){
 
@@ -509,7 +535,7 @@ public class Main {
 						
 			/* desenhando player */
 
-			if(player.getState() == EXPLODING){
+			if(player.checkState(EXPLODING)){
 
 				double alpha = (currentTime - player.getExplosionStart()) / (player.getExplosionEnd() - player.getExplosionStart());
 				GameLib.drawExplosion(player.getX(), player.getY(), alpha);
@@ -534,68 +560,42 @@ public class Main {
 			
 			/* desenhando projeteis (inimigos) */
 
-			/* Desenhando projéteis de todos os inimigos tipo 1 */
-			for (EnemyGeneric e : enemy1) {
-				int[] states = e.getProjectile_states();
-				double[] xs = e.getProjectile_X();
-				double[] ys = e.getProjectile_Y();
-				double radius = e.getProjectile_radius();
+			for (EnemyGeneric enemy : allEnemies) {
+				int[] projStates = enemy.getProjectile_states();
+				double[] projX = enemy.getProjectile_X();
+				double[] projY = enemy.getProjectile_Y();
+				double projRadius = enemy.getProjectile_radius();
 
-				for (int i = 0; i < states.length; i++) {
-					if (states[i] == ACTIVE) {
+				for (int i = 0; i < projStates.length; i++) {
+					if (projStates[i] == ACTIVE) {
 						GameLib.setColor(Color.RED);
-						GameLib.drawCircle(xs[i], ys[i], radius);
+						GameLib.drawCircle(projX[i], projY[i], projRadius);
 					}
 				}
 			}
 
-			/* Desenhando projéteis de todos os inimigos tipo 2 */
-			for (EnemyGeneric e : enemy2) {
-				int[] states = e.getProjectile_states();
-				double[] xs = e.getProjectile_X();
-				double[] ys = e.getProjectile_Y();
-				double radius = e.getProjectile_radius();
-
-				for (int i = 0; i < states.length; i++) {
-					if (states[i] == ACTIVE) {
-						GameLib.setColor(Color.RED);
-						GameLib.drawCircle(xs[i], ys[i], radius);
-					}
-				}
-			}
-			
-			/* desenhando inimigos (tipo 1) */
-
-			for (EnemyGeneric e : enemy1) {
-
-				if (e.getState() == EXPLODING) {
+			// Desenhar inimigos tipo 1
+			for (EnemyGeneric e : enemy1List) {
+				if (e.checkState(EXPLODING)) {
 					double alpha = (currentTime - e.getExplosionStart()) / (e.getExplosionEnd() - e.getExplosionStart());
 					GameLib.drawExplosion(e.getX(), e.getY(), alpha);
-				}
-
-				if (e.getState() == ACTIVE) {
+				} else if (e.checkState(ACTIVE)) {
 					GameLib.setColor(Color.CYAN);
 					GameLib.drawCircle(e.getX(), e.getY(), e.getRadius());
 				}
 			}
 
-			
-			/* desenhando inimigos (tipo 2) */
-
-			for (EnemyGeneric e : enemy2) {
-
-				if (e.getState() == EXPLODING) {
+			// Desenhar inimigos tipo 2
+			for (EnemyGeneric e : enemy2List) {
+				if (e.checkState(EXPLODING)) {
 					double alpha = (currentTime - e.getExplosionStart()) / (e.getExplosionEnd() - e.getExplosionStart());
 					GameLib.drawExplosion(e.getX(), e.getY(), alpha);
-				}
-
-				if (e.getState() == ACTIVE) {
+				} else if (e.checkState(ACTIVE)) {
 					GameLib.setColor(Color.MAGENTA);
 					GameLib.drawDiamond(e.getX(), e.getY(), e.getRadius());
 				}
 			}
 
-			
 			/* chamada a display() da classe libs.GameLib atualiza o desenho exibido pela interface do jogo. */
 			
 			GameLib.display();

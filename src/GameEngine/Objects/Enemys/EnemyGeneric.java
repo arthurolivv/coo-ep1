@@ -28,7 +28,7 @@ public abstract class EnemyGeneric extends Projectiles implements GameObject {
 
     @Override
     public void collide(GameObject Object, long currentTime) {
-        if (this.getState() != ACTIVE || !(Object instanceof Player)) return;
+        if (getState() != ACTIVE || !(Object instanceof Player)) return;
 
         Player player = (Player) Object;
 
@@ -109,7 +109,6 @@ public abstract class EnemyGeneric extends Projectiles implements GameObject {
 
     }
 
-    @Override
     public int getState() {
         return enemy_state;
     }
@@ -149,12 +148,9 @@ public abstract class EnemyGeneric extends Projectiles implements GameObject {
     public void updateProjectiles(double delta) {
         for (int i = 0; i < projectile_states.length; i++) {
             if (projectile_states[i] == ACTIVE) {
-
-                // Se saiu da tela (parte inferior), desativa
                 if (projectile_Y[i] > GameLib.HEIGHT) {
                     projectile_states[i] = INACTIVE;
                 } else {
-                    // Atualiza posição
                     projectile_X[i] += projectile_VX[i] * delta;
                     projectile_Y[i] += projectile_VY[i] * delta;
                 }

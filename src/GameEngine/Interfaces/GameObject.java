@@ -19,8 +19,6 @@ public interface GameObject {
 
     void setState(int state);
 
-    int getState();
-
     double getExplosionStart();
 
     double getExplosionEnd();
