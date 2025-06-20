@@ -1,14 +1,15 @@
-public class Enemy2 extends EnemyGeneric implements Enemy{
+import java.util.List;
+
+public class Enemy2 extends EnemyGeneric{
 
     private double spawnX;
     private int count;
 
-    public Enemy2(int state, double x, double y, double vx, double vy, double radius, double v, double angle, double rv, double explosion_start, double explosion_end, long nextEnemy, int count) {
-        super(state, x, y, vx, vy, radius, v, angle, rv, explosion_start, explosion_end, nextEnemy);
-        this.spawnX = GameLib.WIDTH * 0.20;
+    public Enemy2(int state, double x, double y, double radius, double v, double angle, double rv, double spawnX, int count) {
+        super(state, x, y, radius, v, angle, rv);
+        this.spawnX = spawnX;
         this.count = count;
     }
-
 
     public double getSpawnX() {
         return spawnX;
@@ -27,17 +28,7 @@ public class Enemy2 extends EnemyGeneric implements Enemy{
     }
 
     @Override
-    public void update(long currentTime) {
+    public void updatePosition(long delta) {
 
-    }
-
-    @Override
-    public void render() {
-
-    }
-
-    @Override
-    public double getRv() {
-        return 0;
     }
 }

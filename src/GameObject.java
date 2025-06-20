@@ -1,23 +1,43 @@
-public class GameObject {
+import java.awt.*;
+
+public abstract class GameObject {
 
     public static final int INACTIVE = GameStates.INACTIVE.getValue();
     public static final int ACTIVE = GameStates.ACTIVE.getValue();
     public static final int EXPLODING = GameStates.EXPLODING.getValue();
 
-    private int state;
-    private double x;
-    private double y;
-    private double vx;
-    private double vy;
-    private double radius;
+    protected int state;
+    protected double x;
+    protected double y;
+    protected double radius;
 
-    public GameObject(int state, double x, double y, double vx, double vy, double radius) {
+    public GameObject(int state, double x, double y,  double radius) {
         this.state = state;
         this.x = x;
         this.y = y;
-        this.vx = vx;
-        this.vy = vy;
         this.radius = radius;
+    }
+
+    public abstract void updatePosition(long delta);
+
+    public boolean collidesWith(GameObject other) {
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        double distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < (this.radius + other.radius);
+    }
+
+    public boolean checkCollision(GameObject other) {
+        if (this.state != ACTIVE || other.state != ACTIVE) {
+            return false;
+        }
+
+        double dx = this.x - other.x;
+        double dy = this.y - other.y;
+        double dist = Math.sqrt(dx * dx + dy * dy);
+
+        // O fator 0.8 é para uma colisão mais "generosa" ou para ajustar o hitbox
+        return dist < (this.radius + other.radius) * 0.8;
     }
 
     public int getState() {
@@ -44,22 +64,6 @@ public class GameObject {
         this.y = y;
     }
 
-    public double getVx() {
-        return vx;
-    }
-
-    public void setVx(double vx) {
-        this.vx = vx;
-    }
-
-    public double getVy() {
-        return vy;
-    }
-
-    public void setVy(double vy) {
-        this.vy = vy;
-    }
-
     public double getRadius() {
         return radius;
     }
@@ -67,4 +71,5 @@ public class GameObject {
     public void setRadius(double radius) {
         this.radius = radius;
     }
+
 }

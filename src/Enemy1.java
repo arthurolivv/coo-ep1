@@ -1,10 +1,11 @@
-public class Enemy1 extends EnemyGeneric implements Enemy{
+import java.util.List;
+
+public class Enemy1 extends EnemyGeneric{
 
     protected long nextShoot;
 
-    public Enemy1(int state, double x, double y, double vx, double vy, double radius, double v, double angle, double rv, double explosion_start, double explosion_end, long nextEnemy, long nextShoot) {
-        super(state, x, y, vx, vy, radius, v, angle, rv, explosion_start, explosion_end, nextEnemy);
-        this.nextShoot = nextShoot;
+    public Enemy1(int state, double x, double y, double radius, double v, double angle, double rv) {
+        super(state, x, y, radius, v, angle, rv);
     }
 
     public long getNextShoot() {
@@ -16,17 +17,7 @@ public class Enemy1 extends EnemyGeneric implements Enemy{
     }
 
     @Override
-    public void update(long currentTime) {
+    public void updatePosition(long delta) {
 
-    }
-
-    @Override
-    public void render() {
-
-    }
-
-    @Override
-    public double getRv() {
-        return 0;
     }
 }

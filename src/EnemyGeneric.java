@@ -1,17 +1,20 @@
-public class EnemyGeneric extends GameObject {
+import java.util.List;
+
+public abstract class EnemyGeneric extends GameObject {
 
     protected double v;
     protected double angle;
     protected double rv;
     protected double explosion_start;
     protected double explosion_end;
-    protected long nextEnemy;
 
-    long currentTime = System.currentTimeMillis();
-
-    public EnemyGeneric(int state, double x, double y, double vx, double vy, double radius, double v, double angle, double rv, double explosion_start, double explosion_end, long nextEnemy) {
-        super(state, x, y, vx, vy, radius);
-        this.nextEnemy = nextEnemy;
+    public EnemyGeneric(int state, double x, double y, double radius, double v, double angle, double rv) {
+        super(state, x, y, radius);
+        this.v = v;
+        this.angle = angle;
+        this.rv = rv;
+        this.explosion_start = 0;
+        this.explosion_end = 0;
     }
 
     public double getV() {
@@ -54,11 +57,4 @@ public class EnemyGeneric extends GameObject {
         this.explosion_end = explosion_end;
     }
 
-    public long getNextEnemy() {
-        return nextEnemy;
-    }
-
-    public void setNextEnemy(long nextEnemy) {
-        this.nextEnemy = nextEnemy;
-    }
 }
