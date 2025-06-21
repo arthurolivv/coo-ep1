@@ -7,18 +7,24 @@ import java.awt.*;
 
 public class Enemy2 extends EnemyGeneric {
 
-    private double spawnX;
+    private static final double RADIUS = 12.0;
+    private static final double spawnX = GameLib.WIDTH * 0.20;
     private int count;
 
-    public Enemy2(int state, double x, double y, double radius, double v, double angle, double rv, double spawnX, int count) {
-        super(state, x, y, radius, v, angle, rv);
-        this.spawnX = spawnX;
+    public Enemy2(double y, double v, double angle,  int count) {
+        super(INACTIVE, spawnX, y, RADIUS, v, angle, 0);
         this.count = count;
     }
 
     @Override
     public void updatePosition(long delta) {
+        if (getState() == ACTIVE) {
+            setY(getY() + v * delta);
 
+            if (getY() > GameLib.HEIGHT) {
+                setState(INACTIVE);
+            }
+        }
     }
 
     @Override
@@ -27,12 +33,19 @@ public class Enemy2 extends EnemyGeneric {
         GameLib.drawCircle(this.getX(), this.getY(), this.getRadius());
     }
 
-    public double getSpawnX() {
-        return spawnX;
+    public void activate(double y, double velocity,
+                         double angle, int count, long currentTime) {
+        this.state = ACTIVE;
+        this.x = spawnX + (count*30);
+        this.y = y;
+        this.v = velocity;
+        this.angle = angle;
+        this.count = count;
+        this.nextShoot = currentTime + 300;
     }
 
-    public void setSpawnX(double spawnX) {
-        this.spawnX = spawnX;
+    public double getSpawnX() {
+        return spawnX;
     }
 
     public int getCount() {

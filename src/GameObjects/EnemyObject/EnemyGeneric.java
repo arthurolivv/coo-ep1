@@ -12,14 +12,17 @@ public abstract class EnemyGeneric extends GameObject {
     protected double rv;
     protected double explosion_start;
     protected double explosion_end;
+    protected long nextShoot;
 
-    public EnemyGeneric(int state, double x, double y, double radius, double v, double angle, double rv) {
+    public EnemyGeneric(int state, double x, double y, double radius,
+                 double velocity, double angle, double rotationVelocity) {
         super(state, x, y, radius);
-        this.v = v;
+        this.v = velocity;
         this.angle = angle;
-        this.rv = rv;
+        this.rv = rotationVelocity;
         this.explosion_start = 0;
         this.explosion_end = 0;
+        this.nextShoot = 0;
     }
 
     private void renderExplosion(long currentTime) {
