@@ -1,4 +1,9 @@
-import java.util.List;
+package GameObjects.EnemyObject;
+
+import GameObjects.GameObject;
+import libs.GameLib;
+
+import java.awt.*;
 
 public abstract class EnemyGeneric extends GameObject {
 
@@ -16,6 +21,22 @@ public abstract class EnemyGeneric extends GameObject {
         this.explosion_start = 0;
         this.explosion_end = 0;
     }
+
+    private void renderExplosion(long currentTime) {
+        double alpha = (currentTime - this.getExplosion_start()) /
+                (this.getExplosion_end() - this.getExplosion_start());
+        GameLib.drawExplosion(this.getX(), this.getY(), alpha);
+    }
+
+    public void render(long currentTime) {
+        if (this.getState() == EXPLODING) {
+            renderExplosion(currentTime);
+        } else if (this.getState() == ACTIVE) {
+            renderNormal();
+        }
+    }
+
+    public abstract void renderNormal();
 
     public double getV() {
         return v;

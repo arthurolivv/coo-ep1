@@ -1,4 +1,9 @@
-public class Projectile extends GameObject{
+package GameObjects;
+
+import libs.GameLib;
+
+
+public class Projectile extends GameObject {
 
     protected double vx;
     protected double vy;
@@ -29,6 +34,19 @@ public class Projectile extends GameObject{
         this.setVy(vy);        // Define velocidade Y
         this.setState(ACTIVE); // Muda estado para ativo
         this.activationTime = currentTime; // Armazena quando foi ativado
+    }
+
+    public void update(long delta) {
+        if (this.getState() == ACTIVE) {
+            if (this.getY() < 0) {
+                // Saiu da tela - desativa
+                this.setState(INACTIVE);
+            } else {
+                // Atualiza posição
+                this.setX(this.getX() + this.getVx() * delta);
+                this.setY(this.getY() + this.getVy() * delta);
+            }
+        }
     }
 
     public double getVx() {

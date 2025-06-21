@@ -1,3 +1,9 @@
+import GameObjects.GameObject;
+import GameObjects.PlayerObject.Player;
+import GameObjects.Projectile;
+import enums.GameStates;
+import libs.GameLib;
+
 import java.awt.Color;
 
 /***********************************************************************/
@@ -164,7 +170,7 @@ public class Main {
 		/* iniciado interface gráfica */
 
 		GameLib.initGraphics();
-		//GameLib.initGraphics_SAFE_MODE();  // chame esta versão do método caso nada seja desenhado na janela do jogo.
+		//libs.GameLib.initGraphics_SAFE_MODE();  // chame esta versão do método caso nada seja desenhado na janela do jogo.
 
 		/*************************************************************************************************/
 		/*                                                                                               */
@@ -315,18 +321,7 @@ public class Main {
 
 			/* projeteis (player) */
 
-			for (Projectile projectile : player.getProjectiles()) {
-				if (projectile.getState() == GameObject.ACTIVE) {
-					// Verifica se o projétil saiu da tela
-					if (projectile.getY() < 0) {
-						projectile.setState(GameObject.INACTIVE);
-					} else {
-						// Atualiza a posição do projétil
-						projectile.setX(projectile.getX() + projectile.getVx() * delta);
-						projectile.setY(projectile.getY() + projectile.getVy() * delta);
-					}
-				}
-			}
+			player.updateProjectiles(delta);
 
 			/* projeteis (inimigos) */
 
@@ -519,56 +514,29 @@ public class Main {
 
 			/* Verificando se a explosão do player já acabou.         */
 			/* Ao final da explosão, o player volta a ser controlável */
-			if(player.getState() == EXPLODING){
 
-				if(currentTime > player.getExplosion_end()){
-
-					player.setState(ACTIVE);
-				}
-			}
+			player.updateExplosion(currentTime);
 
 			/********************************************/
 			/* Verificando entrada do usuário (teclado) */
 			/********************************************/
 
-			if(player.getState() == ACTIVE){
+			player.handleInput(
+					delta,
+					currentTime,
+					GameLib.iskeyPressed(GameLib.KEY_UP),
+					GameLib.iskeyPressed(GameLib.KEY_DOWN),
+					GameLib.iskeyPressed(GameLib.KEY_LEFT),
+					GameLib.iskeyPressed(GameLib.KEY_RIGHT),
+					GameLib.iskeyPressed(GameLib.KEY_CONTROL)
+			);
 
-				if(GameLib.iskeyPressed(GameLib.KEY_UP)) player.setY(player.getY() - delta * player.getVy());
-				if(GameLib.iskeyPressed(GameLib.KEY_DOWN)) player.setY(player.getY() + delta * player.getVy());
-				if(GameLib.iskeyPressed(GameLib.KEY_LEFT)) player.setX(player.getX() - delta * player.getVx());
-				if(GameLib.iskeyPressed(GameLib.KEY_RIGHT)) player.setX(player.getX() + delta * player.getVy());
-
-				if (GameLib.iskeyPressed(GameLib.KEY_CONTROL)) {
-					if (currentTime > player.getNextShot()) {
-						// Try to find an inactive projectile
-						Projectile freeProjectile = player.findFreeProjectile();
-
-						if (freeProjectile != null) {
-							// Configure the new projectile
-							freeProjectile.activate(
-									player.getX(),                            // x position
-									player.getY() - 2 * player.getRadius(),   // y position (above player)
-									0.0,                                     // vx (no horizontal movement)
-									-1.0,                                    // vy (moving upward)
-									currentTime                               // activation time
-							);
-
-							// Set cooldown (100ms between shots)
-							player.setNextShot(currentTime + 100);
-						}
-					}
-				}
-			}
-
-			if(GameLib.iskeyPressed(GameLib.KEY_ESCAPE)) running = false;
+			if(GameLib.iskeyPressed(GameLib.KEY_ESCAPE)) running = false; //esc pra fechar
 
 			/* Verificando se coordenadas do player ainda estão dentro */
 			/* da tela de jogo após processar entrada do usuário.      */
 
-			if(player.getX() < 0.0) player.setX(0);
-			if(player.getX() >= GameLib.WIDTH) player.setX(GameLib.WIDTH-1);
-			if(player.getY() < 25.0) player.setY(25);
-			if(player.getY() >= GameLib.HEIGHT) player.setY(GameLib.WIDTH-1);
+			player.clampPosition(0, GameLib.WIDTH-1, 25.0, GameLib.HEIGHT-1);
 
 			/*******************/
 			/* Desenho da cena */
@@ -596,16 +564,7 @@ public class Main {
 
 			/* desenhando player */
 
-			if(player.getState() == EXPLODING){
-
-				double alpha = (currentTime - player.getExplosion_start()) / (player.getExplosion_end() - player.getExplosion_start());
-				GameLib.drawExplosion(player.getX(), player.getY(), alpha);
-			}
-			else{
-
-				GameLib.setColor(Color.BLUE);
-				GameLib.drawPlayer(player.getX(), player.getY(), player.getRadius());
-			}
+			player.render(currentTime);
 
 			GameLib.setColor(Color.GREEN);
 			for (Projectile projectile : player.getProjectiles()) {
@@ -665,7 +624,7 @@ public class Main {
 				}
 			}
 
-			/* chamada a display() da classe GameLib atualiza o desenho exibido pela interface do jogo. */
+			/* chamada a display() da classe libs.GameLib atualiza o desenho exibido pela interface do jogo. */
 
 			GameLib.display();
 

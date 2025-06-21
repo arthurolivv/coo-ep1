@@ -1,4 +1,6 @@
-import java.awt.*;
+package GameObjects;
+
+import enums.GameStates;
 
 public abstract class GameObject {
 
@@ -19,26 +21,6 @@ public abstract class GameObject {
     }
 
     public abstract void updatePosition(long delta);
-
-    public boolean collidesWith(GameObject other) {
-        double dx = this.x - other.x;
-        double dy = this.y - other.y;
-        double distance = Math.sqrt(dx * dx + dy * dy);
-        return distance < (this.radius + other.radius);
-    }
-
-    public boolean checkCollision(GameObject other) {
-        if (this.state != ACTIVE || other.state != ACTIVE) {
-            return false;
-        }
-
-        double dx = this.x - other.x;
-        double dy = this.y - other.y;
-        double dist = Math.sqrt(dx * dx + dy * dy);
-
-        // O fator 0.8 é para uma colisão mais "generosa" ou para ajustar o hitbox
-        return dist < (this.radius + other.radius) * 0.8;
-    }
 
     public int getState() {
         return state;

@@ -1,3 +1,5 @@
+package enums;
+
 public enum GameStates {
     ACTIVE(1),
     INACTIVE(0),

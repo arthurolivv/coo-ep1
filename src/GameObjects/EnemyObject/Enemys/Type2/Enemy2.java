@@ -1,6 +1,11 @@
-import java.util.List;
+package GameObjects.EnemyObject.Enemys.Type2;
 
-public class Enemy2 extends EnemyGeneric{
+import GameObjects.EnemyObject.EnemyGeneric;
+import libs.GameLib;
+
+import java.awt.*;
+
+public class Enemy2 extends EnemyGeneric {
 
     private double spawnX;
     private int count;
@@ -9,6 +14,17 @@ public class Enemy2 extends EnemyGeneric{
         super(state, x, y, radius, v, angle, rv);
         this.spawnX = spawnX;
         this.count = count;
+    }
+
+    @Override
+    public void updatePosition(long delta) {
+
+    }
+
+    @Override
+    public void renderNormal() {
+        GameLib.setColor(Color.CYAN);
+        GameLib.drawCircle(this.getX(), this.getY(), this.getRadius());
     }
 
     public double getSpawnX() {
@@ -27,8 +43,5 @@ public class Enemy2 extends EnemyGeneric{
         this.count = count;
     }
 
-    @Override
-    public void updatePosition(long delta) {
 
-    }
 }
